@@ -1,143 +1,101 @@
-import { useState, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import "./styles/Work.css";
-import WorkImage from "./WorkImage";
-import { MdArrowBack, MdArrowForward } from "react-icons/md";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
-    title: "CallHQ",
-    category: "Voice AI Calling Platform",
-    tools: "Voice AI, Calling Automation, CRM Integrations",
-    image: "/images/callhq.png",
-    link: "https://callhq.ai",
+    title: "Container-as-a-Service Platform",
+    category: "Enterprise self-service deployment platform on Azure AKS with GitOps-driven delivery",
+    tools: ["AKS", "Flux", "Istio", "Calico", "Azure DevOps"],
   },
   {
-    title: "Whatsapp Automation",
-    category: "WABA Application",
-    tools: "WhatsApp Business API, Workflow Automation, Notifications",
-    image: "/images/whatsapp.png",
-    link: "https://whatsapp.callhq.ai",
+    title: "AI Project Scaffolding Agent",
+    category: "Conversational chatbot that generates project templates using LLM-powered code generation",
+    tools: ["Python", "LangChain", "Azure OpenAI", "Cookiecutter"],
   },
   {
-    title: "Broki",
-    category: "Real Estate Platform for FnB Industry",
-    tools: "Property Discovery, Lead Management, Marketplace Workflows",
-    image: "/images/broki.png",
-    link: "https://broki.in",
+    title: "Kubernetes RBAC Operator",
+    category: "Custom controller automating service-account RBAC across Flux-managed namespaces",
+    tools: ["Go", "operator-sdk", "Kubernetes", "FLUX"],
   },
   {
-    title: "Orrdr.com",
-    category: "Ecommerce Platform and Mobile App",
-    tools: "Ecommerce, Mobile Experience, Order Management",
-    image: "/images/orrdr.png",
-    link: "https://orrdr.com",
+    title: "Enterprise Cloud Migration",
+    category: "End-to-end migration of critical DevOps toolchain from on-premises to Azure",
+    tools: ["HashiCorp Vault", "Terraform Enterprise", "JFrog Artifactory", "Azure"],
+  },
+  {
+    title: "Secure Search Infrastructure",
+    category: "Automated provisioning of Azure PaaS for 250+ client portal deployments",
+    tools: ["Azure SQL", "WebApps", "API Management", "Service Bus", "CI/CD"],
+  },
+  {
+    title: "Architecture & Documentation",
+    category: "Technical design artifacts and runbooks presented at Architecture Review Board",
+    tools: ["Architecture Diagrams", "Runbooks", "IaC Documentation", "ARB"],
   },
 ];
 
 const Work = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  const goToSlide = useCallback(
-    (index: number) => {
-      if (isAnimating) return;
-      setIsAnimating(true);
-      setCurrentIndex(index);
-      setTimeout(() => setIsAnimating(false), 500);
-    },
-    [isAnimating]
-  );
+  useEffect(() => {
+    const cards = sectionRef.current?.querySelectorAll(".work-card");
+    if (!cards) return;
 
-  const goToPrev = useCallback(() => {
-    const newIndex =
-      currentIndex === 0 ? projects.length - 1 : currentIndex - 1;
-    goToSlide(newIndex);
-  }, [currentIndex, goToSlide]);
+    cards.forEach((card, i) => {
+      gsap.fromTo(
+        card,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+          delay: i * 0.05,
+        }
+      );
+    });
 
-  const goToNext = useCallback(() => {
-    const newIndex =
-      currentIndex === projects.length - 1 ? 0 : currentIndex + 1;
-    goToSlide(newIndex);
-  }, [currentIndex, goToSlide]);
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
 
   return (
-    <div className="work-section" id="work">
+    <div className="work-section" id="work" ref={sectionRef}>
       <div className="work-container section-container">
         <h2>
           My <span>Work</span>
         </h2>
 
-        <div className="carousel-wrapper">
-          {/* Navigation Arrows */}
-          <button
-            className="carousel-arrow carousel-arrow-left"
-            onClick={goToPrev}
-            aria-label="Previous project"
-            data-cursor="disable"
-          >
-            <MdArrowBack />
-          </button>
-          <button
-            className="carousel-arrow carousel-arrow-right"
-            onClick={goToNext}
-            aria-label="Next project"
-            data-cursor="disable"
-          >
-            <MdArrowForward />
-          </button>
-
-          {/* Slides */}
-          <div className="carousel-track-container">
-            <div
-              className="carousel-track"
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`,
-              }}
-            >
-              {projects.map((project, index) => (
-                <div className="carousel-slide" key={index}>
-                  <div className="carousel-content">
-                    <div className="carousel-info">
-                      <div className="carousel-number">
-                        <h3>0{index + 1}</h3>
-                      </div>
-                      <div className="carousel-details">
-                        <h4>{project.title}</h4>
-                        <p className="carousel-category">
-                          {project.category}
-                        </p>
-                        <div className="carousel-tools">
-                          <span className="tools-label">Tools & Features</span>
-                          <p>{project.tools}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="carousel-image-wrapper">
-                      <WorkImage
-                        image={project.image}
-                        alt={project.title}
-                        link={project.link}
-                      />
-                    </div>
-                  </div>
+        <div className="work-list">
+          {projects.map((project, index) => (
+            <div className="work-card" key={index}>
+              <div className="work-card-number">
+                <span>0{index + 1}</span>
+              </div>
+              <div className="work-card-content">
+                <h3>{project.title}</h3>
+                <p className="work-card-category">{project.category}</p>
+                <div className="work-card-tools">
+                  {project.tools.map((tool, i) => (
+                    <span className="work-tool-tag" key={i}>
+                      {tool}
+                    </span>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="work-card-line" />
             </div>
-          </div>
-
-          {/* Dot Indicators */}
-          <div className="carousel-dots">
-            {projects.map((_, index) => (
-              <button
-                key={index}
-                className={`carousel-dot ${index === currentIndex ? "carousel-dot-active" : ""
-                  }`}
-                onClick={() => goToSlide(index)}
-                aria-label={`Go to project ${index + 1}`}
-                data-cursor="disable"
-              />
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </div>

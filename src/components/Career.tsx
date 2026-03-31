@@ -15,58 +15,66 @@ const Career = () => {
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Co-Founder</h4>
-                <h5>CallHQ.ai</h5>
+                <h4>Staff DevOps Engineer</h4>
+                <h5>Canadian Tire</h5>
               </div>
-              <h3>NOW</h3>
+              <h3>2022–NOW</h3>
             </div>
             <p>
-              Building CallHQ.ai, a voice AI platform for
-              automating customer calls, support, and conversions.
+              Architected an enterprise Container-as-a-Service platform on
+              Azure AKS with Istio service mesh and Calico network policies.
+              Migrated HashiCorp Vault, Terraform Enterprise, and JFrog
+              Artifactory to Azure. Standardized CI/CD and GitOps templates
+              across Flux and ArgoCD, and provided architectural leadership
+              for platform-wide design decisions.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Adobe</h4>
-                <h5>6+ years · Noida</h5>
+                <h4>Senior Consultant</h4>
+                <h5>BDO Canada</h5>
               </div>
-              <h3>2017–24</h3>
+              <h3>2019–22</h3>
             </div>
             <p>
-              Senior Lead Software Engineer (Feb 2024 – May 2024). Lead Software
-              Engineer (Feb 2021 – Feb 2024). Software Engineer II (Dec 2017 –
-              Feb 2021): internationalization, globalization, and localization for
-              Adobe Technical Communication Suite; functional and linguistic testing
-              strategy; in-house tooling; collaboration with product and engineering
-              for high-quality localized releases.
+              Delivered end-to-end Azure IaaS and PaaS solutions for multiple
+              enterprise clients. Authored IaC with PowerShell and ARM
+              templates, orchestrated 250+ portal deployments via CI/CD, and
+              established observability stacks with Azure Sentinel, Grafana,
+              and Prometheus.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Consultant</h4>
-                <h5>Genpact Headstrong </h5>
+                <h4>Systems Administrator</h4>
+                <h5>RICOH</h5>
               </div>
-              <h3>2016–17</h3>
+              <h3>2017–19</h3>
             </div>
             <p>
-              Sep 2016 – Nov 2017. Developed and maintained WCF services consumed
-              by the UI; deployment support across environments; NUnit tests and
-              coverage; bug fixes from QA and users; database work.
+              Operated VMware clusters spanning 50+ hosts and 1,000+ VMs.
+              Administered Citrix XenApp/XenDesktop for multi-site
+              application delivery. Owned vulnerability management, patch
+              orchestration via WSUS, and network hardening through group
+              policy and MFA enforcement.
             </p>
           </div>
           <div className="career-info-box">
             <div className="career-info-in">
               <div className="career-role">
-                <h4>Sf Engineer</h4>
-                <h5>Infogain</h5>
+                <h4>IT Specialist</h4>
+                <h5>Micro Computers Consulting</h5>
               </div>
-              <h3>2013-16</h3>
+              <h3>2015–17</h3>
             </div>
             <p>
-              Software engineering across enterprise projects, contributing to
-              design, development, and delivery of business applications.
+              Centrally managed client infrastructure via SolarWinds
+              N-central. Configured perimeter firewalls (Cisco ASA,
+              SonicWALL, Checkpoint), provisioned SAN storage across IBM,
+              Lenovo, and NetApp, and built ESXi and Hyper-V
+              virtualization environments.
             </p>
           </div>
         </div>

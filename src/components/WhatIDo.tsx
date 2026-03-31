@@ -87,20 +87,22 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>AI & AUTOMATION</h3>
-              <h4>Workflow Intelligence for Organizations</h4>
+              <h3>CLOUD &amp; PLATFORM ENGINEERING</h3>
+              <h4>Enterprise-Scale Azure Infrastructure</h4>
               <p>
-                AI specialist helping organizations automate workflows—internal ops
-                and customer-facing—so teams ship faster with less manual work.
+                I design and operate cloud-native platforms on Azure —
+                from AKS-based CaaS with service-mesh networking to
+                Terraform-managed IaC estates — enabling engineering
+                teams to self-serve secure, production-grade environments.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">LLMs &amp; agents</div>
-                <div className="what-tags">Workflow design</div>
-                <div className="what-tags">RAG &amp; retrieval</div>
-                <div className="what-tags">Evals &amp; guardrails</div>
-                <div className="what-tags">Integrations</div>
-                <div className="what-tags">Product strategy</div>
+                <div className="what-tags">Azure</div>
+                <div className="what-tags">AKS / Kubernetes</div>
+                <div className="what-tags">Terraform</div>
+                <div className="what-tags">HashiCorp Vault</div>
+                <div className="what-tags">Istio / Calico</div>
+                <div className="what-tags">ARM / Bicep</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -124,21 +126,22 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>BUILD &amp; SCALE</h3>
-              <h4>Shipping AI in Production</h4>
+              <h3>CI/CD &amp; OBSERVABILITY</h3>
+              <h4>Delivery Pipelines, GitOps &amp; Monitoring</h4>
               <p>
-                I build the systems behind it: APIs, data, voice/real-time, and
-                full-stack products—production-ready, not slide decks.
+                I build standardized CI/CD templates and GitOps workflows
+                that give development teams repeatable, auditable releases —
+                backed by full-stack observability through NewRelic,
+                Prometheus, Grafana, and Azure Monitor.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Node.js</div>
-                <div className="what-tags">Python</div>
-                <div className="what-tags">REST &amp; real-time APIs</div>
-                <div className="what-tags">PostgreSQL</div>
-                <div className="what-tags">MongoDB</div>
-                <div className="what-tags">React</div>
-                <div className="what-tags">Cloud &amp; infra</div>
+                <div className="what-tags">Azure DevOps</div>
+                <div className="what-tags">Flux / ArgoCD</div>
+                <div className="what-tags">PowerShell / Python / Go</div>
+                <div className="what-tags">JFrog Artifactory</div>
+                <div className="what-tags">NewRelic / Grafana</div>
+                <div className="what-tags">Prometheus</div>
               </div>
               <div className="what-arrow"></div>
             </div>

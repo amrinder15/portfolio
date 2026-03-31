@@ -11,23 +11,25 @@ import {
   RapierRigidBody,
 } from "@react-three/rapier";
 
-const textureLoader = new THREE.TextureLoader();
-const imageUrls = [
-  "/images/react2.webp",
-  "/images/next2.webp",
-  "/images/node2.webp",
-  "/images/express.webp",
-  "/images/mongo.webp",
-  "/images/mysql.webp",
-  "/images/typescript.webp",
-  "/images/javascript.webp",
+const techItems = [
+  { label: "Azure", color: "#0078D4" },
+  { label: "Kubernetes", color: "#326CE5" },
+  { label: "Terraform", color: "#7B42BC" },
+  { label: "Docker", color: "#2496ED" },
+  { label: "Python", color: "#FFD43B" },
+  { label: "Go", color: "#00ADD8" },
+  { label: "Vault", color: "#FFEC6E" },
+  { label: "Grafana", color: "#F46800" },
+  { label: "ArgoCD", color: "#EF7B4D" },
+  { label: "Flux", color: "#5468FF" },
+  { label: "Istio", color: "#466BB0" },
+  { label: "Prometheus", color: "#E6522C" },
 ];
-const textures = imageUrls.map((url) => textureLoader.load(url));
 
-const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
+const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
 
-const spheres = [...Array(30)].map(() => ({
-  scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
+const spheres = [...Array(40)].map(() => ({
+  scale: [0.6, 0.8, 0.7, 0.9, 1][Math.floor(Math.random() * 5)],
 }));
 
 type SphereProps = {
@@ -152,16 +154,20 @@ const TechStack = () => {
     };
   }, []);
   const materials = useMemo(() => {
-    return textures.map(
-      (texture) =>
+    return techItems.map(
+      (item) =>
         new THREE.MeshPhysicalMaterial({
-          map: texture,
-          emissive: "#ffffff",
-          emissiveMap: texture,
-          emissiveIntensity: 0.3,
-          metalness: 0.5,
-          roughness: 1,
-          clearcoat: 0.1,
+          color: new THREE.Color(item.color),
+          metalness: 0.1,
+          roughness: 0.05,
+          transmission: 0.6,
+          thickness: 1.5,
+          ior: 1.5,
+          clearcoat: 1,
+          clearcoatRoughness: 0,
+          envMapIntensity: 1.5,
+          emissive: new THREE.Color(item.color),
+          emissiveIntensity: 0.15,
         })
     );
   }, []);
@@ -170,9 +176,17 @@ const TechStack = () => {
     <div className="techstack">
       <h2> My Techstack</h2>
 
+      <div className="tech-labels">
+        {techItems.map((item, i) => (
+          <span key={i} className="tech-label" style={{ color: item.color }}>
+            {item.label}
+          </span>
+        ))}
+      </div>
+
       <Canvas
         shadows
-        gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
+        gl={{ alpha: true, stencil: false, depth: false, antialias: true }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
