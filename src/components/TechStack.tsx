@@ -1,226 +1,94 @@
-import * as THREE from "three";
-import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
-import { EffectComposer, N8AO } from "@react-three/postprocessing";
-import {
-  BallCollider,
-  Physics,
-  RigidBody,
-  CylinderCollider,
-  RapierRigidBody,
-} from "@react-three/rapier";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
-const techItems = [
-  { label: "Azure", color: "#0078D4" },
-  { label: "Kubernetes", color: "#326CE5" },
-  { label: "Terraform", color: "#7B42BC" },
-  { label: "Docker", color: "#2496ED" },
-  { label: "Python", color: "#FFD43B" },
-  { label: "Go", color: "#00ADD8" },
-  { label: "Vault", color: "#FFEC6E" },
-  { label: "Grafana", color: "#F46800" },
-  { label: "ArgoCD", color: "#EF7B4D" },
-  { label: "Flux", color: "#5468FF" },
-  { label: "Istio", color: "#466BB0" },
-  { label: "Prometheus", color: "#E6522C" },
+const rows = [
+  [
+    "Azure", "Kubernetes", "Terraform", "Docker", "Helm",
+    "Istio", "Calico", "ArgoCD", "Flux", "Azure DevOps",
+  ],
+  [
+    "Python", "Go", "PowerShell", "HashiCorp Vault", "JFrog Artifactory",
+    "Grafana", "Prometheus", "NewRelic", "Azure Monitor", "ARM / Bicep",
+  ],
+  [
+    "AKS", "GitOps", "CI/CD", "Service Mesh", "IaC",
+    "RBAC", "Azure SQL", "API Management", "Service Bus", "Sentinel",
+  ],
 ];
 
-const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
+function MarqueeRow({
+  items,
+  reverse = false,
+  speed = 40,
+}: {
+  items: string[];
+  reverse?: boolean;
+  speed?: number;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
 
-const spheres = [...Array(40)].map(() => ({
-  scale: [0.6, 0.8, 0.7, 0.9, 1][Math.floor(Math.random() * 5)],
-}));
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
 
-type SphereProps = {
-  vec?: THREE.Vector3;
-  scale: number;
-  r?: typeof THREE.MathUtils.randFloatSpread;
-  material: THREE.MeshPhysicalMaterial;
-  isActive: boolean;
-};
+    // Duplicate content once so we have a seamless loop
+    const contentWidth = track.scrollWidth / 2;
+    const duration = contentWidth / speed;
 
-function SphereGeo({
-  vec = new THREE.Vector3(),
-  scale,
-  r = THREE.MathUtils.randFloatSpread,
-  material,
-  isActive,
-}: SphereProps) {
-  const api = useRef<RapierRigidBody | null>(null);
-
-  useFrame((_state, delta) => {
-    if (!isActive) return;
-    delta = Math.min(0.1, delta);
-    const impulse = vec
-      .copy(api.current!.translation())
-      .normalize()
-      .multiply(
-        new THREE.Vector3(
-          -50 * delta * scale,
-          -150 * delta * scale,
-          -50 * delta * scale
-        )
-      );
-
-    api.current?.applyImpulse(impulse, true);
-  });
-
-  return (
-    <RigidBody
-      linearDamping={0.75}
-      angularDamping={0.15}
-      friction={0.2}
-      position={[r(20), r(20) - 25, r(20) - 10]}
-      ref={api}
-      colliders={false}
-    >
-      <BallCollider args={[scale]} />
-      <CylinderCollider
-        rotation={[Math.PI / 2, 0, 0]}
-        position={[0, 0, 1.2 * scale]}
-        args={[0.15 * scale, 0.275 * scale]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        scale={scale}
-        geometry={sphereGeometry}
-        material={material}
-        rotation={[0.3, 1, 1]}
-      />
-    </RigidBody>
-  );
-}
-
-type PointerProps = {
-  vec?: THREE.Vector3;
-  isActive: boolean;
-};
-
-function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
-  const ref = useRef<RapierRigidBody>(null);
-
-  useFrame(({ pointer, viewport }) => {
-    if (!isActive) return;
-    const targetVec = vec.lerp(
-      new THREE.Vector3(
-        (pointer.x * viewport.width) / 2,
-        (pointer.y * viewport.height) / 2,
-        0
-      ),
-      0.2
+    const tween = gsap.fromTo(
+      track,
+      { x: reverse ? -contentWidth : 0 },
+      {
+        x: reverse ? 0 : -contentWidth,
+        duration,
+        ease: "none",
+        repeat: -1,
+      }
     );
-    ref.current?.setNextKinematicTranslation(targetVec);
-  });
+
+    // Pause on hover
+    const pause = () => tween.timeScale(0.2);
+    const resume = () => gsap.to(tween, { timeScale: 1, duration: 0.4 });
+    track.addEventListener("mouseenter", pause);
+    track.addEventListener("mouseleave", resume);
+
+    return () => {
+      tween.kill();
+      track.removeEventListener("mouseenter", pause);
+      track.removeEventListener("mouseleave", resume);
+    };
+  }, [reverse, speed]);
+
+  // Render items twice for seamless loop
+  const doubled = [...items, ...items];
 
   return (
-    <RigidBody
-      position={[100, 100, 100]}
-      type="kinematicPosition"
-      colliders={false}
-      ref={ref}
-    >
-      <BallCollider args={[2]} />
-    </RigidBody>
+    <div className="marquee-row">
+      <div className="marquee-track" ref={trackRef}>
+        {doubled.map((label, i) => (
+          <span className="marquee-item" key={i}>
+            {label}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
 const TechStack = () => {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const threshold = document
-        .getElementById("work")!
-        .getBoundingClientRect().top;
-      setIsActive(scrollY > threshold);
-    };
-    document.querySelectorAll(".header a").forEach((elem) => {
-      const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
-    });
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  const materials = useMemo(() => {
-    return techItems.map(
-      (item) =>
-        new THREE.MeshPhysicalMaterial({
-          color: new THREE.Color(item.color),
-          metalness: 0.1,
-          roughness: 0.05,
-          transmission: 0.6,
-          thickness: 1.5,
-          ior: 1.5,
-          clearcoat: 1,
-          clearcoatRoughness: 0,
-          envMapIntensity: 1.5,
-          emissive: new THREE.Color(item.color),
-          emissiveIntensity: 0.15,
-        })
-    );
-  }, []);
-
   return (
-    <div className="techstack">
-      <h2> My Techstack</h2>
-
-      <div className="tech-labels">
-        {techItems.map((item, i) => (
-          <span key={i} className="tech-label" style={{ color: item.color }}>
-            {item.label}
-          </span>
+    <div className="techstack" id="techstack">
+      <h2>My Techstack</h2>
+      <div className="marquee-container">
+        {rows.map((items, i) => (
+          <MarqueeRow
+            key={i}
+            items={items}
+            reverse={i % 2 === 1}
+            speed={30 + i * 8}
+          />
         ))}
       </div>
-
-      <Canvas
-        shadows
-        gl={{ alpha: true, stencil: false, depth: false, antialias: true }}
-        camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
-        onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
-        className="tech-canvas"
-      >
-        <ambientLight intensity={1} />
-        <spotLight
-          position={[20, 20, 25]}
-          penumbra={1}
-          angle={0.2}
-          color="white"
-          castShadow
-          shadow-mapSize={[512, 512]}
-        />
-        <directionalLight position={[0, 5, -4]} intensity={2} />
-        <Physics gravity={[0, 0, 0]}>
-          <Pointer isActive={isActive} />
-          {spheres.map((props, i) => (
-            <SphereGeo
-              key={i}
-              {...props}
-              material={materials[Math.floor(Math.random() * materials.length)]}
-              isActive={isActive}
-            />
-          ))}
-        </Physics>
-        <Environment
-          files="/models/char_enviorment.hdr"
-          environmentIntensity={0.5}
-          environmentRotation={[0, 4, 2]}
-        />
-        <EffectComposer enableNormalPass={false}>
-          <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
-        </EffectComposer>
-      </Canvas>
     </div>
   );
 };
