@@ -42,6 +42,9 @@ const Work = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Skip scroll animation on mobile — cards are visible by default
+    if (window.innerWidth < 900) return;
+
     const cards = sectionRef.current?.querySelectorAll(".work-card");
     if (!cards) return;
 
