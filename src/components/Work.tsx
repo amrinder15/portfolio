@@ -48,7 +48,7 @@ const Work = () => {
     cards.forEach((card, i) => {
       gsap.fromTo(
         card,
-        { y: 60, opacity: 0 },
+        { y: 40, opacity: 0 },
         {
           y: 0,
           opacity: 1,
@@ -56,8 +56,8 @@ const Work = () => {
           ease: "power3.out",
           scrollTrigger: {
             trigger: card,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
+            start: "top 95%",
+            toggleActions: "play none none none",
           },
           delay: i * 0.05,
         }
