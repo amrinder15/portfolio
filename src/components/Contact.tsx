@@ -44,7 +44,7 @@ const Contact = () => {
               LinkedIn <MdArrowOutward />
             </a>
             <a
-              href="https://github.com/amrinder-rattanpal"
+              href="https://github.com/amrinder15"
               target="_blank"
               rel="noreferrer"
               data-cursor="disable"
@@ -55,7 +55,7 @@ const Contact = () => {
           </div>
           <div className="contact-box">
             <h2>
-              Designed and Developed <br /> by <span>Amrinder Rattanpal</span>
+              Built with passion <br /> by <span>Amrinder Rattanpal</span>
             </h2>
             <h5>
               <MdCopyright /> 2026
