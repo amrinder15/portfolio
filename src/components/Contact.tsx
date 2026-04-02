@@ -1,14 +1,9 @@
 import { useEffect } from "react";
-import { FaLinkedinIn } from "react-icons/fa6";
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
 
 const Contact = () => {
   useEffect(() => {
-    if (window.innerWidth <= 900) {
-      return;
-    }
-
     const linkedInWindow = window as Window & {
       IN?: { parse?: () => void };
     };
@@ -111,24 +106,6 @@ const Contact = () => {
                 </a>
               </div>
             </div>
-            <a
-              href="https://www.linkedin.com/in/amrinder-rattanpal-01531677/"
-              target="_blank"
-              rel="noreferrer"
-              data-cursor="disable"
-              className="contact-linkedin-card"
-            >
-              <span className="contact-linkedin-card-icon">
-                <FaLinkedinIn />
-              </span>
-              <span className="contact-linkedin-card-content">
-                <strong>Amrinder Rattanpal</strong>
-                <span>Staff DevOps Engineer</span>
-              </span>
-              <span className="contact-linkedin-card-arrow">
-                <MdArrowOutward />
-              </span>
-            </a>
           </div>
           <div className="contact-box">
             <h2>

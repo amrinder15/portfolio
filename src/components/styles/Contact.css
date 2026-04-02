@@ -49,62 +49,6 @@ a.contact-social {
   width: 100%;
 }
 
-.contact-linkedin-card {
-  display: none;
-  align-items: center;
-  gap: 16px;
-  margin-top: 24px;
-  padding: 18px 20px;
-  max-width: 320px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 18px;
-  background:
-    linear-gradient(135deg, rgba(10, 14, 23, 0.96), rgba(18, 28, 45, 0.92)),
-    linear-gradient(135deg, rgba(94, 234, 212, 0.12), transparent 55%);
-  transition: border-color 0.3s ease, transform 0.3s ease;
-}
-
-.contact-linkedin-card:hover {
-  border-color: rgba(94, 234, 212, 0.45);
-  transform: translateY(-2px);
-}
-
-.contact-linkedin-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  border-radius: 12px;
-  background: #0a66c2;
-  color: #fff;
-  font-size: 18px;
-}
-
-.contact-linkedin-card-content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.contact-linkedin-card-content strong {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.contact-linkedin-card-content span {
-  font-size: 13px;
-  opacity: 0.68;
-}
-
-.contact-linkedin-card-arrow {
-  display: inline-flex;
-  font-size: 20px;
-  opacity: 0.7;
-}
-
 .contact-box h2 {
   font-weight: 400;
   font-size: 23px;
@@ -177,14 +121,5 @@ a.contact-social {
 
   .contact-container {
     width: calc(100% - 25px);
-  }
-
-  .contact-linkedin-badge {
-    display: none;
-  }
-
-  .contact-linkedin-card {
-    display: flex;
-    max-width: 100%;
   }
 }
