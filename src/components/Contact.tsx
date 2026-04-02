@@ -1,7 +1,41 @@
+import { useEffect } from "react";
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
 
 const Contact = () => {
+  useEffect(() => {
+    const linkedInWindow = window as Window & {
+      IN?: { parse?: () => void };
+    };
+
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      'script[data-linkedin-profile-badge="true"]'
+    );
+
+    const parseBadge = () => {
+      linkedInWindow.IN?.parse?.();
+    };
+
+    if (existingScript) {
+      parseBadge();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://platform.linkedin.com/badges/js/profile.js";
+    script.async = true;
+    script.defer = true;
+    script.type = "text/javascript";
+    script.setAttribute("data-linkedin-profile-badge", "true");
+    script.addEventListener("load", parseBadge, { once: true });
+
+    document.body.appendChild(script);
+
+    return () => {
+      script.removeEventListener("load", parseBadge);
+    };
+  }, []);
+
   return (
     <div className="contact-section section-container" id="contact">
       <div className="contact-container">
@@ -52,6 +86,26 @@ const Contact = () => {
             >
               GitHub <MdArrowOutward />
             </a>
+            <div className="contact-linkedin-badge" data-cursor="disable">
+              <div
+                className="badge-base LI-profile-badge"
+                data-locale="en_US"
+                data-size="medium"
+                data-theme="dark"
+                data-type="VERTICAL"
+                data-vanity="amrinder-rattanpal-01531677"
+                data-version="v1"
+              >
+                <a
+                  className="badge-base__link LI-simple-link"
+                  href="https://ca.linkedin.com/in/amrinder-rattanpal-01531677?trk=profile-badge"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Amrinder Rattanpal
+                </a>
+              </div>
+            </div>
           </div>
           <div className="contact-box">
             <h2>

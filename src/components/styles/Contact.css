@@ -40,6 +40,15 @@ a.contact-social {
   border-bottom: 1px solid #ccc;
 }
 
+.contact-linkedin-badge {
+  margin-top: 24px;
+  max-width: 320px;
+}
+
+.contact-linkedin-badge .LI-profile-badge {
+  width: 100%;
+}
+
 .contact-box h2 {
   font-weight: 400;
   font-size: 23px;
