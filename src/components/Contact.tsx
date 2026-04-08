@@ -42,29 +42,21 @@ const Contact = () => {
         <h3>Contact</h3>
         <div className="contact-flex">
           <div className="contact-box">
-            <h4>Connect</h4>
+            <h4>Open To</h4>
             <p>
-              <a
-                href="mailto:a.rattanpal@hotmail.com"
-                data-cursor="disable"
-              >
-                a.rattanpal@hotmail.com
-              </a>
-            </p>
-            <h4>Education</h4>
-            <p>
-              M.Eng Electrical &amp; Computers (Wireless &amp; Networking),
-              Concordia University, Montreal — 2014
+              Open to Staff / Principal platform engineering and cloud architecture roles,
+              as well as technical leadership discussions.
             </p>
             <p>
-              B.Tech Electronics &amp; Communication, Punjab Technical
-              University, Jalandhar — 2011
+              Connect with me on LinkedIn or reach out directly.
             </p>
-            <h4>Certifications</h4>
-            <p>
-              Azure Administrator · Azure Solutions Architect Expert ·
-              Certified Kubernetes Administrator (CKA) · SAFe · CEH · CCNA
-            </p>
+            <a
+              className="contact-mail-link"
+              href="mailto:a.rattanpal@hotmail.com"
+              data-cursor="disable"
+            >
+              a.rattanpal@hotmail.com
+            </a>
           </div>
           <div className="contact-box">
             <h4>Social</h4>
@@ -101,20 +93,18 @@ const Contact = () => {
                   href="https://ca.linkedin.com/in/amrinder-rattanpal-01531677?trk=profile-badge"
                   target="_blank"
                   rel="noreferrer"
-                >
-                  Amrinder Rattanpal
-                </a>
+                />
               </div>
             </div>
           </div>
-          <div className="contact-box">
-            <h2>
-              Built with passion <br /> by <span>Amrinder Rattanpal</span>
-            </h2>
-            <h5>
-              <MdCopyright /> 2026
-            </h5>
-          </div>
+        </div>
+        <div className="contact-footer">
+          <h2>
+            Built with passion by <span>Amrinder Rattanpal</span>
+          </h2>
+          <h5>
+            <MdCopyright /> 2026
+          </h5>
         </div>
       </div>
     </div>

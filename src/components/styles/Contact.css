@@ -17,6 +17,7 @@
 .contact-flex {
   display: flex;
   justify-content: space-between;
+  gap: 3rem;
 }
 
 .contact-flex h4 {
@@ -28,16 +29,28 @@
 .contact-box {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .contact-flex p {
   margin-top: 10px;
   margin-bottom: 20px;
+  max-width: 38rem;
+  line-height: 1.7;
+}
+
+.contact-mail-link {
+  display: inline-flex;
+  width: fit-content;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 1.05rem;
 }
 
 a.contact-social {
   font-size: 25px;
   border-bottom: 1px solid #ccc;
+  width: fit-content;
 }
 
 .contact-linkedin-badge {
@@ -47,6 +60,20 @@ a.contact-social {
 
 .contact-linkedin-badge .LI-profile-badge {
   width: 100%;
+}
+
+.contact-linkedin-badge .badge-base__link {
+  display: none;
+}
+
+.contact-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 4.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .contact-box h2 {
@@ -106,8 +133,19 @@ a.contact-social {
     gap: 40px;
   }
 
+  .contact-linkedin-badge {
+    align-self: flex-start;
+    justify-content: flex-start;
+  }
+
   .contact-flex p {
     margin-bottom: 0px;
+  }
+
+  .contact-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 3rem;
   }
 
   .contact-flex h4 {

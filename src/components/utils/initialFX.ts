@@ -71,12 +71,36 @@ export function initialFX() {
       delay: 0.1,
     }
   );
+  gsap.fromTo(
+    ".landing-stat-card",
+    { opacity: 0, y: 28, scale: 0.96, filter: "blur(6px)" },
+    {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 0.9,
+      ease: "power3.out",
+      stagger: 0.12,
+      delay: 1.05,
+    }
+  );
+  gsap.to(".landing-stat-card", {
+    y: (index) => (index % 2 === 0 ? -6 : -10),
+    duration: 2.8,
+    ease: "sine.inOut",
+    stagger: {
+      each: 0.12,
+      from: "start",
+    },
+    repeat: -1,
+    yoyo: true,
+    delay: 2.1,
+  });
 
-  var landingText3 = new SplitText(".landing-h2-info-1", TextProps);
   var landingText4 = new SplitText(".landing-h2-1", TextProps);
   var landingText5 = new SplitText(".landing-h2-2", TextProps);
 
-  LoopText(landingText2, landingText3);
   LoopText(landingText4, landingText5);
 }
 
