@@ -1,170 +1,234 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
+import gsap from "gsap";
 import "./styles/WhatIDo.css";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+const capabilities = [
+  {
+    title: "Platform Engineering",
+    description:
+      "Design and build internal cloud platforms that abstract infrastructure complexity and provide secure, self-service deployment workflows for engineering teams.",
+    tags: ["Internal Platforms", "Self-Service", "Secure Workflows"],
+  },
+  {
+    title: "Cloud & Kubernetes Architecture",
+    description:
+      "Architect and operate enterprise-grade Kubernetes platforms on Azure AKS, leveraging GitOps (Flux, ArgoCD), service mesh, and policy-based security.",
+    tags: ["Azure AKS", "GitOps", "Policy Security"],
+  },
+  {
+    title: "DevOps & CI/CD Systems",
+    description:
+      "Create standardized CI/CD and GitOps pipelines that improve release velocity, consistency, and operational reliability across teams.",
+    tags: ["CI/CD", "Release Velocity", "Reliability"],
+  },
+  {
+    title: "Infrastructure as Code",
+    description:
+      "Develop and maintain Terraform modules and IaC frameworks to enable repeatable, compliant, and scalable infrastructure provisioning.",
+    tags: ["Terraform", "Compliance", "Scalability"],
+  },
+];
+
+const architecturalArtifacts = [
+  {
+    title: "Terraform in Azure",
+    image: "/images/tfe.svg",
+    alt: "Terraform artifact for Azure architecture",
+  },
+  {
+    title: "HashiCorp Vault with DR",
+    image: "/images/Vault-DR.svg",
+    alt: "HashiCorp Vault disaster recovery architecture artifact",
+  },
+  {
+    title: "AKS",
+    image: "/images/AKS.svg",
+    alt: "Azure Kubernetes Service architecture artifact",
+  },
+];
 
 const WhatIDo = () => {
-  const containerRef = useRef<(HTMLDivElement | null)[]>([]);
-  const setRef = (el: HTMLDivElement | null, index: number) => {
-    containerRef.current[index] = el;
-  };
+  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const [selectedArtifactIndex, setSelectedArtifactIndex] = useState<number | null>(null);
+
+  const selectedArtifact =
+    selectedArtifactIndex !== null ? architecturalArtifacts[selectedArtifactIndex] : null;
+  const modalRoot = typeof document !== "undefined" ? document.body : null;
+
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
+    const ctx = gsap.context(() => {
+      imageRefs.current.forEach((image, index) => {
+        if (!image) {
+          return;
         }
+
+        gsap.set(image, { transformOrigin: "50% 50%" });
+
+        gsap.timeline({ repeat: -1, yoyo: true, defaults: { ease: "sine.inOut" } }).to(image, {
+          y: index % 2 === 0 ? -10 : -14,
+          rotate: index === 1 ? 1.8 : -1.8,
+          scale: 1.035,
+          duration: 2.3 + index * 0.25,
+        });
       });
-    }
+    });
+
     return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
+      ctx.revert();
     };
   }, []);
-  return (
-    <div className="whatIDO">
-      <div className="what-box">
-        <h2 className="title">
-          W<span className="hat-h2">HAT</span>
-          <div>
-            I<span className="do-h2"> DO</span>
-          </div>
-        </h2>
-      </div>
-      <div className="what-box">
-        <div className="what-box-in">
-          <div className="what-border2">
-            <svg width="100%">
-              <line
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="100%"
-                stroke="white"
-                strokeWidth="2"
-                strokeDasharray="7,7"
-              />
-              <line
-                x1="100%"
-                y1="0"
-                x2="100%"
-                y2="100%"
-                stroke="white"
-                strokeWidth="2"
-                strokeDasharray="7,7"
-              />
-            </svg>
-          </div>
-          <div
-            className="what-content what-noTouch"
-            ref={(el) => setRef(el, 0)}
-          >
-            <div className="what-border1">
-              <svg height="100%">
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="100%"
-                  y2="0"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeDasharray="6,6"
-                />
-                <line
-                  x1="0"
-                  y1="100%"
-                  x2="100%"
-                  y2="100%"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeDasharray="6,6"
-                />
-              </svg>
-            </div>
-            <div className="what-corner"></div>
 
-            <div className="what-content-in">
-              <h3>CLOUD &amp; PLATFORM ENGINEERING</h3>
-              <h4>Enterprise-Scale Azure Infrastructure</h4>
-              <p>
-                I design and operate cloud-native platforms on Azure —
-                from AKS-based CaaS with service-mesh networking to
-                Terraform-managed IaC estates — enabling engineering
-                teams to self-serve secure, production-grade environments.
-              </p>
-              <h5>Skillset & tools</h5>
-              <div className="what-content-flex">
-                <div className="what-tags">Azure</div>
-                <div className="what-tags">AKS / Kubernetes</div>
-                <div className="what-tags">Terraform</div>
-                <div className="what-tags">HashiCorp Vault</div>
-                <div className="what-tags">Istio / Calico</div>
-                <div className="what-tags">ARM / Bicep</div>
-              </div>
-              <div className="what-arrow"></div>
+  useEffect(() => {
+    if (selectedArtifactIndex === null) {
+      return;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedArtifactIndex(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [selectedArtifactIndex]);
+
+  return (
+    <>
+      <div className="whatIDO">
+        <div className="what-box what-box-copy">
+          <div className="what-copy-frame">
+            <div className="what-border-shell what-border-shell-copy" aria-hidden="true">
+              <span className="what-border what-border-top" />
+              <span className="what-border what-border-right" />
+              <span className="what-border what-border-bottom" />
+              <span className="what-border what-border-left" />
             </div>
+            <div className="what-corner what-corner-copy" aria-hidden="true" />
+            <h2 className="title what-title">
+              What
+              <br />
+              <span className="do-h2">I Do</span>
+            </h2>
           </div>
-          <div
-            className="what-content what-noTouch"
-            ref={(el) => setRef(el, 1)}
-          >
-            <div className="what-border1">
-              <svg height="100%">
-                <line
-                  x1="0"
-                  y1="100%"
-                  x2="100%"
-                  y2="100%"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeDasharray="6,6"
-                />
-              </svg>
-            </div>
-            <div className="what-corner"></div>
-            <div className="what-content-in">
-              <h3>CI/CD &amp; OBSERVABILITY</h3>
-              <h4>Delivery Pipelines, GitOps &amp; Monitoring</h4>
-              <p>
-                I build standardized CI/CD templates and GitOps workflows
-                that give development teams repeatable, auditable releases —
-                backed by full-stack observability through NewRelic,
-                Prometheus, Grafana, and Azure Monitor.
-              </p>
-              <h5>Skillset & tools</h5>
-              <div className="what-content-flex">
-                <div className="what-tags">Azure DevOps</div>
-                <div className="what-tags">Flux / ArgoCD</div>
-                <div className="what-tags">PowerShell / Python / Go</div>
-                <div className="what-tags">JFrog Artifactory</div>
-                <div className="what-tags">NewRelic / Grafana</div>
-                <div className="what-tags">Prometheus</div>
-              </div>
-              <div className="what-arrow"></div>
+        </div>
+        <div className="what-box what-box-grid">
+          <div className="what-grid-shell">
+            <div className="what-box-in">
+              {capabilities.map((capability, index) => (
+                <article
+                  className="what-content"
+                  key={capability.title}
+                  style={{ "--card-delay": "0ms" } as CSSProperties}
+                >
+                  <div className="what-border-shell" aria-hidden="true">
+                    <span className="what-border what-border-top" />
+                    <span className="what-border what-border-right" />
+                    <span className="what-border what-border-bottom" />
+                    <span className="what-border what-border-left" />
+                  </div>
+                  <div className="what-corner" aria-hidden="true" />
+                  <div className="what-content-in">
+                    <span className="what-card-index">0{index + 1}</span>
+                    <h3>{capability.title}</h3>
+                    <p>{capability.description}</p>
+                    <div className="what-tags" aria-label={`${capability.title} focus areas`}>
+                      {capability.tags.map((tag) => (
+                        <span className="what-tag" key={tag}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </div>
+        <div className="what-artifacts-row">
+          <aside className="what-artifacts" aria-labelledby="architectural-artifacts-title">
+            <div className="what-artifacts-panel">
+              <p className="what-artifacts-kicker">Architectural Artifacts</p>
+              <h3 className="what-artifacts-title" id="architectural-artifacts-title">
+                Reference diagrams from recent platform work.
+              </h3>
+              <div className="what-artifact-list">
+                {architecturalArtifacts.map((artifact, index) => (
+                  <article className="what-artifact-card" key={artifact.title}>
+                    <button
+                      className="what-artifact-button"
+                      type="button"
+                      onClick={() => setSelectedArtifactIndex(index)}
+                      aria-label={`Open ${artifact.title} diagram`}
+                    >
+                      <div className="what-artifact-visual-shell">
+                        <img
+                          className="what-artifact-visual"
+                          ref={(element) => {
+                            imageRefs.current[index] = element;
+                          }}
+                          src={artifact.image}
+                          alt={artifact.alt}
+                        />
+                      </div>
+                      <div className="what-artifact-meta">
+                        <h4>{artifact.title}</h4>
+                        <span className="what-artifact-expand">Open diagram</span>
+                      </div>
+                    </button>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
-    </div>
+      {selectedArtifact &&
+        modalRoot &&
+        createPortal(
+          <div
+            className="what-artifact-modal"
+            role="presentation"
+            onClick={() => setSelectedArtifactIndex(null)}
+          >
+            <div
+              className="what-artifact-modal-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="artifact-modal-title"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                className="what-artifact-modal-close"
+                type="button"
+                onClick={() => setSelectedArtifactIndex(null)}
+                aria-label="Close architectural diagram"
+              >
+                Close
+              </button>
+              <div className="what-artifact-modal-copy">
+                <p className="what-artifacts-kicker">Architectural Artifact</p>
+                <h3 className="what-artifact-modal-title" id="artifact-modal-title">
+                  {selectedArtifact.title}
+                </h3>
+              </div>
+              <div className="what-artifact-modal-visual-shell">
+                <img
+                  className="what-artifact-modal-visual"
+                  src={selectedArtifact.image}
+                  alt={selectedArtifact.alt}
+                />
+              </div>
+            </div>
+          </div>,
+          modalRoot
+        )}
+    </>
   );
 };
 
 export default WhatIDo;
-
-function handleClick(container: HTMLDivElement) {
-  container.classList.toggle("what-content-active");
-  container.classList.remove("what-sibling");
-  if (container.parentElement) {
-    const siblings = Array.from(container.parentElement.children);
-
-    siblings.forEach((sibling) => {
-      if (sibling !== container) {
-        sibling.classList.remove("what-content-active");
-        sibling.classList.toggle("what-sibling");
-      }
-    });
-  }
-}

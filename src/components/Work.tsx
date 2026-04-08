@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import "./styles/Work.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MdArrowOutward } from "react-icons/md";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,10 +27,11 @@ const projects = [
     category: "End-to-end migration of critical DevOps toolchain from on-premises to Azure",
     tools: ["HashiCorp Vault", "Terraform Enterprise", "JFrog Artifactory", "Azure"],
   },
-  {
-    title: "Secure Search Infrastructure",
-    category: "Automated provisioning of Azure PaaS for 250+ client portal deployments",
-    tools: ["Azure SQL", "WebApps", "API Management", "Service Bus", "CI/CD"],
+  {  
+    title: "AKS Context Switcher (aksctx)",
+    category: "CLI tool for discovering, switching, and comparing AKS clusters across Azure subscriptions",
+    link: "https://github.com/amrinder15/aksctx",
+    tools: ["Go", "Azure AKS", "Azure SDK", "Kubectl", "kubelogin"],
   },
   {
     title: "Architecture & Documentation",
@@ -95,6 +97,17 @@ const Work = () => {
                     </span>
                   ))}
                 </div>
+                {project.link && (
+                  <a
+                    className="work-card-link"
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cursor="disable"
+                  >
+                    View Project <MdArrowOutward />
+                  </a>
+                )}
               </div>
               <div className="work-card-line" />
             </div>

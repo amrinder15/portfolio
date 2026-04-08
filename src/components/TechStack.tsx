@@ -1,26 +1,51 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-const rows = [
-  [
-    "Azure", "Kubernetes", "Terraform", "Docker", "Helm",
-    "Istio", "Calico", "ArgoCD", "Flux", "Azure DevOps",
-  ],
-  [
-    "Python", "Go", "PowerShell", "HashiCorp Vault", "JFrog Artifactory",
-    "Grafana", "Prometheus", "NewRelic", "Azure Monitor", "ARM / Bicep",
-  ],
-  [
-    "AKS", "GitOps", "CI/CD", "Service Mesh", "IaC",
-    "RBAC", "Azure SQL", "API Management", "Service Bus", "Sentinel",
-  ],
+const categories = [
+  {
+    title: "Containers",
+    items: [
+      "Kubernetes",
+      "OpenShift",
+      "AKS",
+      "Docker",
+      "Helm",
+      "ArgoCD",
+      "Flux",
+      "Calico",
+      "Istio",
+    ],
+  },
+  {
+    title: "Languages",
+    items: ["Go", "Python"],
+  },
+  {
+    title: "Tools",
+    items: [
+      "Terraform",
+      "PowerShell",
+      "Shell",
+      "Azure DevOps",
+      "GitHub",
+      "Artifactory",
+      "Hashi Vault",
+      "Azure",
+    ],
+  },
+  {
+    title: "Monitoring",
+    items: ["Grafana", "Prometheus", "Loki", "New Relic", "App Insights"],
+  },
 ];
 
 function MarqueeRow({
+  title,
   items,
   reverse = false,
   speed = 40,
 }: {
+  title: string;
   items: string[];
   reverse?: boolean;
   speed?: number;
@@ -63,13 +88,18 @@ function MarqueeRow({
   const doubled = [...items, ...items];
 
   return (
-    <div className="marquee-row">
-      <div className="marquee-track" ref={trackRef}>
-        {doubled.map((label, i) => (
-          <span className="marquee-item" key={i}>
-            {label}
-          </span>
-        ))}
+    <div className="marquee-category">
+      <div className="marquee-category-label">
+        <span>{title}</span>
+      </div>
+      <div className="marquee-row">
+        <div className="marquee-track" ref={trackRef}>
+          {doubled.map((label, i) => (
+            <span className="marquee-item" key={`${title}-${label}-${i}`}>
+              {label}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -78,14 +108,15 @@ function MarqueeRow({
 const TechStack = () => {
   return (
     <div className="techstack" id="techstack">
-      <h2>My Techstack</h2>
+      <h2>Tech Stack</h2>
       <div className="marquee-container">
-        {rows.map((items, i) => (
+        {categories.map((category, i) => (
           <MarqueeRow
-            key={i}
-            items={items}
+            key={category.title}
+            title={category.title}
+            items={category.items}
             reverse={i % 2 === 1}
-            speed={30 + i * 8}
+            speed={28 + i * 6}
           />
         ))}
       </div>

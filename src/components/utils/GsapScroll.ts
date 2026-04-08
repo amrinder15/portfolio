@@ -79,22 +79,22 @@ export function setCharTimeline(
         )
         .to(".about-section", { y: "30%", duration: 6 }, 0)
         .to(".about-section", { opacity: 0, delay: 3, duration: 2 }, 0)
-        .fromTo(
+        .to(
           ".character-model",
-          { pointerEvents: "inherit" },
-          { pointerEvents: "none", x: "-12%", delay: 2, duration: 5 },
+          {
+            pointerEvents: "none",
+            x: "-21%",
+            scale: 0.84,
+            delay: 2,
+            duration: 5,
+            ease: "power2.inOut",
+          },
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
         .to(neckBone!.rotation, { x: 0.6, delay: 2, duration: 3 }, 0)
         .to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
         .to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
-        .fromTo(
-          ".what-box-in",
-          { display: "none" },
-          { display: "flex", duration: 0.1, delay: 6 },
-          0
-        )
         .fromTo(
           monitor.position,
           { y: -10, z: 2 },
@@ -109,10 +109,16 @@ export function setCharTimeline(
         );
 
       tl3
-        .fromTo(
+        .to(
           ".character-model",
-          { y: "0%" },
-          { y: "-100%", duration: 4, ease: "none", delay: 1 },
+          {
+            y: "-100%",
+            x: "-28%",
+            scale: 0.68,
+            duration: 4,
+            ease: "power1.out",
+            delay: 1,
+          },
           0
         )
         .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
@@ -120,19 +126,67 @@ export function setCharTimeline(
     }
   } else {
     if (character) {
-      const tM2 = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".what-box-in",
-          start: "top 70%",
-          end: "bottom top",
-        },
-      });
-      tM2.to(".what-box-in", { display: "flex", duration: 0.1, delay: 0 }, 0);
+      gsap.set(".what-box-in", { display: "grid" });
+      gsap.set(".what-artifacts", { autoAlpha: 1, y: 0 });
     }
   }
 }
 
 export function setAllTimeline() {
+  const whatTimeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".whatIDO",
+      start: "top 65%",
+      once: true,
+    },
+  });
+
+  whatTimeline
+    .set(".what-box-in", { display: "grid", autoAlpha: 0 })
+    .set(".what-artifacts", { autoAlpha: 0, y: 20 })
+    .fromTo(
+      ".what-copy-frame",
+      { opacity: 1, y: 0 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.01,
+        ease: "power3.out",
+      },
+      0
+    )
+    .to(
+      ".what-box-in",
+      {
+        autoAlpha: 1,
+        duration: 0.01,
+      },
+      0.46
+    )
+    .to(
+      ".what-artifacts",
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.35,
+        ease: "power3.out",
+      },
+      0.42
+    )
+    .fromTo(
+      ".what-content",
+      { opacity: 1, y: 0, scale: 1 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        stagger: 0,
+        duration: 0.01,
+        ease: "power3.out",
+      },
+      0.08
+    );
+
   const careerTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".career-section",
